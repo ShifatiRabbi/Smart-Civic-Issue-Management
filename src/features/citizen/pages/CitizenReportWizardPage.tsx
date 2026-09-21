@@ -37,6 +37,7 @@ import { PriorityLevel, CivicComplaint } from '../../../types';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import { PriorityBadge } from '../../../components/ui/PriorityBadge';
+import { analyzeIncidentWithAi } from '../../intelligence/services/aiTriageService';
 
 const SAMPLE_PHOTO_PRESETS = [
   {
@@ -87,6 +88,36 @@ export const CitizenReportWizardPage: React.FC = () => {
   const [notifyEmail, setNotifyEmail] = useState<boolean>(true);
   const [agreeCharter, setAgreeCharter] = useState<boolean>(true);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // AI Assistant State (Step 11 Integration)
+  const [isAiSuggesting, setIsAiSuggesting] = useState<boolean>(false);
+  const [aiSuggestionMessage, setAiSuggestionMessage] = useState<string | null>(null);
+
+  const handleAiSmartSuggest = async () => {
+    if (!description && !title) return;
+    setIsAiSuggesting(true);
+    setAiSuggestionMessage(null);
+    try {
+      const result = await analyzeIncidentWithAi(title || 'Civic Hazard', description || title, ward);
+      if (result.recommendedPriority) {
+        setPriority(result.recommendedPriority);
+      }
+      // Check if predicted category matches one of our categories
+      const matchedCat = MOCK_CATEGORIES.find(
+        (c) => c.code === result.predictedCategoryId || c.name.toLowerCase().includes(result.predictedCategoryName.toLowerCase())
+      );
+      if (matchedCat) {
+        setSelectedCategoryCode(matchedCat.code);
+      }
+      setAiSuggestionMessage(
+        `AI Analyzed: Recommended category "${result.predictedCategoryName}" & priority "${result.recommendedPriority}". (${result.triageExplanation})`
+      );
+    } catch (err) {
+      console.warn('AI Suggestion error:', err);
+    } finally {
+      setIsAiSuggesting(false);
+    }
+  };
 
   const selectedCategory = MOCK_CATEGORIES.find((c) => c.code === selectedCategoryCode) || MOCK_CATEGORIES[0];
 
@@ -376,10 +407,37 @@ export const CitizenReportWizardPage: React.FC = () => {
                 placeholder="Describe the severity, duration (when did this start?), water stagnation, safety risk to pedestrians, or traffic bottlenecks..."
                 className="w-full px-3 py-2 text-sm border border-slate-300 rounded-md focus:border-blue-600 focus:ring-1 focus:ring-blue-600 bg-white"
               />
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                {description.length} characters (min 15)
-              </span>
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-[11px] text-slate-400">
+                  {description.length} characters (min 15)
+                </span>
+                <button
+                  type="button"
+                  onClick={handleAiSmartSuggest}
+                  disabled={isAiSuggesting || (!title && !description)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-md border border-purple-200 transition cursor-pointer disabled:opacity-50"
+                >
+                  <Sparkles className={`w-3.5 h-3.5 ${isAiSuggesting ? 'animate-spin' : ''}`} />
+                  <span>{isAiSuggesting ? 'AI Analyzing...' : 'AI Smart Triage & Categorize'}</span>
+                </button>
+              </div>
             </div>
+
+            {aiSuggestionMessage && (
+              <div className="p-3 rounded-lg bg-purple-50/80 border border-purple-200 text-xs text-purple-900 flex items-start gap-2">
+                <Sparkles className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <span>{aiSuggestionMessage}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setAiSuggestionMessage(null)}
+                  className="text-purple-500 hover:text-purple-800 font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>

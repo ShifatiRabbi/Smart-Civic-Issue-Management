@@ -59,6 +59,28 @@ export const API_ENDPOINTS = {
     SLA_RULES: '/admin/sla-rules',
     AUDIT_LOGS: '/admin/audit-logs',
   },
+  // Geospatial GIS & Proximity Dispatch
+  GIS: {
+    FLEET_LOCATIONS: '/gis/fleet',
+    WARD_BOUNDARIES: '/gis/wards',
+    CRITICAL_ASSETS: '/gis/assets',
+    HEATMAP_CLUSTERS: '/gis/clusters',
+    DISPATCH_PROXIMITY: (incidentId: string) => `/gis/dispatch/proximity/${incidentId}`,
+  },
+  // AI Civic Intelligence & Auto-Triage
+  INTELLIGENCE: {
+    AUTO_TRIAGE: '/intelligence/triage',
+    DUPLICATE_DETECTION: '/intelligence/duplicates',
+    CITIZEN_EXPLANATION: '/intelligence/citizen-summary',
+  },
+  // Executive SLA & Regulatory Reporting
+  ANALYTICS: {
+    SLA_VELOCITY: '/analytics/sla-velocity',
+    WARD_PERFORMANCE: '/analytics/wards',
+    DEPARTMENT_SUMMARY: '/analytics/departments',
+    EXPORT_CSV: '/analytics/export/csv',
+    EXPORT_AUDIT_REPORT: '/analytics/export/audit',
+  },
   // File Handling (Object Storage Proxy)
   FILES: {
     UPLOAD: '/files/upload',

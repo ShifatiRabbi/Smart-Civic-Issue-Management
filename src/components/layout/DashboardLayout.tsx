@@ -30,7 +30,11 @@ import {
   X,
   ExternalLink,
   ShieldCheck,
-  AlertTriangle
+  AlertTriangle,
+  Radio,
+  Sparkles,
+  BarChart3,
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '../../features/auth/context/AuthContext';
 import { UserRole } from '../../types';
@@ -66,18 +70,26 @@ export const DashboardLayout: React.FC = () => {
           { to: '/staff', label: 'Triage Dashboard', icon: LayoutDashboard, end: true },
           { to: '/staff/complaints', label: 'Intake Queue', icon: FileText },
           { to: '/staff/workload', label: 'Worker Dispatch Matrix', icon: Users },
+          { to: '/gis', label: 'GIS Command Map', icon: Radio },
+          { to: '/intelligence', label: 'AI Auto-Triage', icon: Sparkles },
         ];
       case UserRole.SUPERVISOR:
         return [
           { to: '/supervisor', label: 'Operations Command', icon: LayoutDashboard, end: true },
           { to: '/supervisor/escalations', label: 'SLA Escalations', icon: ShieldAlert },
           { to: '/supervisor/reviews', label: 'Resolution Sign-Offs', icon: CheckSquare },
-          { to: '/supervisor/reports', label: 'Department Analytics', icon: Layers },
+          { to: '/gis', label: 'GIS Fleet & Heatmap', icon: Radio },
+          { to: '/intelligence', label: 'AI Triage & Duplicates', icon: Sparkles },
+          { to: '/analytics', label: 'SLA Velocity Analytics', icon: BarChart3 },
+          { to: '/supervisor/reports', label: 'Department Reports', icon: Layers },
         ];
       case UserRole.ADMIN:
         return [
           { to: '/admin', label: 'System Overview', icon: LayoutDashboard, end: true },
           { to: '/admin/complaints', label: 'Master Complaints', icon: FileText },
+          { to: '/gis', label: 'GIS Command Center', icon: Radio },
+          { to: '/intelligence', label: 'AI Intelligence Suite', icon: Sparkles },
+          { to: '/analytics', label: 'Executive SLA Analytics', icon: BarChart3 },
           { to: '/admin/users', label: 'User Directory & RBAC', icon: Users },
           { to: '/admin/departments', label: 'Departments & Wards', icon: Building2 },
           { to: '/admin/sla-rules', label: 'SLA Matrix Configuration', icon: Sliders },

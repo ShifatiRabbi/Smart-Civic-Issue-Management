@@ -60,8 +60,12 @@ import { AdminDepartmentsPage } from '../../features/admin/pages/AdminDepartment
 import { AdminSlaRulesPage } from '../../features/admin/pages/AdminSlaRulesPage';
 import { AdminAuditLogsPage } from '../../features/admin/pages/AdminAuditLogsPage';
 
-// Future Role Dashboards (Step 6, 7, 8, 9 shells)
-import { RoleDashboardPlaceholder } from '../../features/dashboard/RoleDashboardPlaceholder';
+// Geospatial Intelligence & GIS Command (Step 10)
+import { GisCommandCenterPage } from '../../features/gis/pages/GisCommandCenterPage';
+
+// AI Civic Intelligence & Executive SLA Suite (Step 11)
+import { CivicIntelligencePage } from '../../features/intelligence/pages/CivicIntelligencePage';
+import { ExecutiveAnalyticsPage } from '../../features/analytics/pages/ExecutiveAnalyticsPage';
 
 export const AppRouter: React.FC = () => {
   return (
@@ -160,6 +164,33 @@ export const AppRouter: React.FC = () => {
           <Route path="/admin/departments" element={<AdminDepartmentsPage />} />
           <Route path="/admin/sla-rules" element={<AdminSlaRulesPage />} />
           <Route path="/admin/audit-logs" element={<AdminAuditLogsPage />} />
+        </Route>
+
+        {/* SHARED ADVANCED ENTERPRISE SUITE (STEP 10 & STEP 11) */}
+        <Route
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                UserRole.DEPARTMENT_STAFF,
+                UserRole.SUPERVISOR,
+                UserRole.ADMIN,
+              ]}
+            >
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          {/* STEP 10: GEOSPATIAL GIS COMMAND CENTER */}
+          <Route path="/gis" element={<GisCommandCenterPage />} />
+          <Route path="/command-center" element={<GisCommandCenterPage />} />
+
+          {/* STEP 11: AI CIVIC INTELLIGENCE & AUTO-TRIAGE */}
+          <Route path="/intelligence" element={<CivicIntelligencePage />} />
+          <Route path="/ai-triage" element={<CivicIntelligencePage />} />
+
+          {/* STEP 11: EXECUTIVE SLA ANALYTICS & REGULATORY AUDIT EXPORT */}
+          <Route path="/analytics" element={<ExecutiveAnalyticsPage />} />
+          <Route path="/sla-analytics" element={<ExecutiveAnalyticsPage />} />
         </Route>
 
         {/* Catch-all fallback redirect */}
