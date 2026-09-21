@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --civic-primary: #1b3b57;
+    --civic-primary-dark: #0f2438;
+    --civic-primary-light: #3b7eb3;
+    --civic-accent: #0d9488;
+    --civic-canvas: #f8fafc;
+    --civic-surface: #ffffff;
+    --civic-border: #e2e8f0;
+    --civic-text-main: #0f172a;
+    --civic-text-muted: #64748b;
+  }
+
+  body {
+    background-color: var(--civic-canvas);
+    color: var(--civic-text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  /* Accessible focus indicators for compliance */
+  *:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+}
+
+/* Custom scrollbars for data tables and sidebars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
