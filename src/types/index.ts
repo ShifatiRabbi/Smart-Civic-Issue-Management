@@ -130,3 +130,19 @@ export interface CivicComplaint {
   attachments: Attachment[];
   timeline: TimelineEntry[];
 }
+
+export interface FieldWorker {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  departmentId: string;
+  departmentName: string;
+  vehicleNumber: string;
+  status: 'AVAILABLE' | 'ON_DUTY' | 'BUSY' | 'ON_BREAK' | 'OFF_DUTY';
+  currentLocation?: string;
+  activeAssignmentsCount: number;
+  maxCapacity: number;
+  specialization: string;
+  rating: number;
+}

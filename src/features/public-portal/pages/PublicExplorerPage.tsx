@@ -23,10 +23,10 @@ import {
   PlusCircle
 } from 'lucide-react';
 import { 
-  MOCK_COMPLAINTS, 
   MOCK_CATEGORIES, 
   MOCK_WARDS 
 } from '../../../data/mockData';
+import { useComplaints } from '../../complaints/context/ComplaintContext';
 import { ComplaintStatus, PriorityLevel, CivicComplaint } from '../../../types';
 import { StatusBadge } from '../../../components/ui/StatusBadge';
 import { PriorityBadge } from '../../../components/ui/PriorityBadge';
@@ -35,6 +35,7 @@ import { Card } from '../../../components/ui/Card';
 
 export const PublicExplorerPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { complaints } = useComplaints();
 
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'ALL');
@@ -56,7 +57,7 @@ export const PublicExplorerPage: React.FC = () => {
 
   // Filter complaints based on user criteria
   const filteredComplaints = useMemo(() => {
-    return MOCK_COMPLAINTS.filter((c) => {
+    return complaints.filter((c) => {
       // Keyword matching
       if (searchTerm) {
         const query = searchTerm.toLowerCase();
@@ -98,11 +99,11 @@ export const PublicExplorerPage: React.FC = () => {
           [PriorityLevel.MEDIUM]: 2,
           [PriorityLevel.LOW]: 1,
         };
-        return pOrder[b.priority] - pOrder[a.priority];
+        return (pOrder[b.priority as PriorityLevel] || 0) - (pOrder[a.priority as PriorityLevel] || 0);
       }
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [searchTerm, selectedCategory, selectedStatus, selectedWard, sortBy, supportedIds]);
+  }, [complaints, searchTerm, selectedCategory, selectedStatus, selectedWard, sortBy, supportedIds]);
 
   const resetFilters = () => {
     setSearchTerm('');

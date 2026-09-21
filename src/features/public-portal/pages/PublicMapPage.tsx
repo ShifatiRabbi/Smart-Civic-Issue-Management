@@ -20,10 +20,10 @@ import {
 } from 'lucide-react';
 import { CivicMapViewer } from '../../map/components/CivicMapViewer';
 import { 
-  MOCK_COMPLAINTS, 
   MOCK_CATEGORIES, 
   MOCK_WARDS 
 } from '../../../data/mockData';
+import { useComplaints } from '../../complaints/context/ComplaintContext';
 import { CivicComplaint, ComplaintStatus, PriorityLevel } from '../../../types';
 import { StatusBadge } from '../../../components/ui/StatusBadge';
 import { PriorityBadge } from '../../../components/ui/PriorityBadge';
@@ -31,12 +31,13 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 
 export const PublicMapPage: React.FC = () => {
+  const { complaints } = useComplaints();
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [selectedWard, setSelectedWard] = useState<string>('ALL');
-  const [selectedComplaint, setSelectedComplaint] = useState<CivicComplaint | null>(MOCK_COMPLAINTS[0]);
+  const [selectedComplaint, setSelectedComplaint] = useState<CivicComplaint | null>(complaints[0] || null);
 
   // Filter complaints based on selection
-  const visibleComplaints = MOCK_COMPLAINTS.filter((c) => {
+  const visibleComplaints = complaints.filter((c) => {
     if (selectedCategory !== 'ALL' && c.category.code !== selectedCategory) return false;
     if (selectedWard !== 'ALL' && c.ward !== selectedWard) return false;
     return true;

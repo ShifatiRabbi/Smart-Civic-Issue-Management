@@ -27,7 +27,40 @@ import { PublicExplorerPage } from '../../features/public-portal/pages/PublicExp
 import { PublicMapPage } from '../../features/public-portal/pages/PublicMapPage';
 import { PublicComplaintDetailPage } from '../../features/public-portal/pages/PublicComplaintDetailPage';
 
-// Role Dashboards (Step 3 & 4 shells)
+// Citizen Portal Pages (Step 5)
+import { CitizenDashboard } from '../../features/citizen/pages/CitizenDashboard';
+import { CitizenComplaintsPage } from '../../features/citizen/pages/CitizenComplaintsPage';
+import { CitizenReportWizardPage } from '../../features/citizen/pages/CitizenReportWizardPage';
+import { CitizenComplaintDetailPage } from '../../features/citizen/pages/CitizenComplaintDetailPage';
+import { CitizenNotificationsPage } from '../../features/citizen/pages/CitizenNotificationsPage';
+
+// Field Worker Pages (Step 6)
+import { WorkerDashboardPage } from '../../features/worker/pages/WorkerDashboardPage';
+import { WorkerAssignmentsPage } from '../../features/worker/pages/WorkerAssignmentsPage';
+import { WorkerWorkOrderDetailPage } from '../../features/worker/pages/WorkerWorkOrderDetailPage';
+import { WorkerHistoryPage } from '../../features/worker/pages/WorkerHistoryPage';
+
+// Department Staff Pages (Step 7)
+import { StaffDashboardPage } from '../../features/staff/pages/StaffDashboardPage';
+import { StaffComplaintsQueuePage } from '../../features/staff/pages/StaffComplaintsQueuePage';
+import { StaffWorkloadDispatchPage } from '../../features/staff/pages/StaffWorkloadDispatchPage';
+import { CitizenProfilePage } from '../../features/citizen/pages/CitizenProfilePage';
+
+// Operations Supervisor Pages (Step 8)
+import { SupervisorDashboardPage } from '../../features/supervisor/pages/SupervisorDashboardPage';
+import { SupervisorEscalationPage } from '../../features/supervisor/pages/SupervisorEscalationPage';
+import { SupervisorReviewsPage } from '../../features/supervisor/pages/SupervisorReviewsPage';
+import { SupervisorReportsPage } from '../../features/supervisor/pages/SupervisorReportsPage';
+
+// Municipal System Administration Pages (Step 9)
+import { AdminDashboardPage } from '../../features/admin/pages/AdminDashboardPage';
+import { AdminComplaintsPage } from '../../features/admin/pages/AdminComplaintsPage';
+import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
+import { AdminDepartmentsPage } from '../../features/admin/pages/AdminDepartmentsPage';
+import { AdminSlaRulesPage } from '../../features/admin/pages/AdminSlaRulesPage';
+import { AdminAuditLogsPage } from '../../features/admin/pages/AdminAuditLogsPage';
+
+// Future Role Dashboards (Step 6, 7, 8, 9 shells)
 import { RoleDashboardPlaceholder } from '../../features/dashboard/RoleDashboardPlaceholder';
 
 export const AppRouter: React.FC = () => {
@@ -48,7 +81,7 @@ export const AppRouter: React.FC = () => {
           <Route path="/forbidden" element={<ForbiddenPage />} />
         </Route>
 
-        {/* CITIZEN PORTAL ROUTES (PROTECTED) */}
+        {/* CITIZEN PORTAL ROUTES (STEP 5 COMPLETE) */}
         <Route
           element={
             <ProtectedRoute allowedRoles={[UserRole.CITIZEN, UserRole.ADMIN]}>
@@ -56,29 +89,15 @@ export const AppRouter: React.FC = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            path="/citizen"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Citizen Grievance & Tracking Portal"
-                moduleRole={UserRole.CITIZEN}
-                stepNumber={5}
-              />
-            }
-          />
-          <Route
-            path="/citizen/*"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Citizen Grievance & Tracking Portal"
-                moduleRole={UserRole.CITIZEN}
-                stepNumber={5}
-              />
-            }
-          />
+          <Route path="/citizen" element={<CitizenDashboard />} />
+          <Route path="/citizen/complaints" element={<CitizenComplaintsPage />} />
+          <Route path="/citizen/complaints/new" element={<CitizenReportWizardPage />} />
+          <Route path="/citizen/complaints/:id" element={<CitizenComplaintDetailPage />} />
+          <Route path="/citizen/notifications" element={<CitizenNotificationsPage />} />
+          <Route path="/citizen/profile" element={<CitizenProfilePage />} />
         </Route>
 
-        {/* FIELD WORKER TERMINAL ROUTES (PROTECTED) */}
+        {/* FIELD WORKER TERMINAL ROUTES (STEP 6) */}
         <Route
           element={
             <ProtectedRoute allowedRoles={[UserRole.FIELD_WORKER, UserRole.ADMIN]}>
@@ -86,29 +105,13 @@ export const AppRouter: React.FC = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            path="/worker"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Field Worker Mobile Dispatch Terminal"
-                moduleRole={UserRole.FIELD_WORKER}
-                stepNumber={6}
-              />
-            }
-          />
-          <Route
-            path="/worker/*"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Field Worker Mobile Dispatch Terminal"
-                moduleRole={UserRole.FIELD_WORKER}
-                stepNumber={6}
-              />
-            }
-          />
+          <Route path="/worker" element={<WorkerDashboardPage />} />
+          <Route path="/worker/assignments" element={<WorkerAssignmentsPage />} />
+          <Route path="/worker/assignments/:id" element={<WorkerWorkOrderDetailPage />} />
+          <Route path="/worker/history" element={<WorkerHistoryPage />} />
         </Route>
 
-        {/* DEPARTMENT STAFF TRIAGE ROUTES (PROTECTED) */}
+        {/* DEPARTMENT STAFF TRIAGE ROUTES (STEP 7) */}
         <Route
           element={
             <ProtectedRoute
@@ -122,29 +125,12 @@ export const AppRouter: React.FC = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            path="/staff"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Department Triage & Dispatch Desk"
-                moduleRole={UserRole.DEPARTMENT_STAFF}
-                stepNumber={7}
-              />
-            }
-          />
-          <Route
-            path="/staff/*"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Department Triage & Dispatch Desk"
-                moduleRole={UserRole.DEPARTMENT_STAFF}
-                stepNumber={7}
-              />
-            }
-          />
+          <Route path="/staff" element={<StaffDashboardPage />} />
+          <Route path="/staff/complaints" element={<StaffComplaintsQueuePage />} />
+          <Route path="/staff/workload" element={<StaffWorkloadDispatchPage />} />
         </Route>
 
-        {/* SUPERVISOR ESCALATION & COMMAND ROUTES (PROTECTED) */}
+        {/* SUPERVISOR ESCALATION & COMMAND ROUTES (STEP 8) */}
         <Route
           element={
             <ProtectedRoute allowedRoles={[UserRole.SUPERVISOR, UserRole.ADMIN]}>
@@ -152,29 +138,14 @@ export const AppRouter: React.FC = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            path="/supervisor"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Operations Supervisor SLA Command"
-                moduleRole={UserRole.SUPERVISOR}
-                stepNumber={8}
-              />
-            }
-          />
-          <Route
-            path="/supervisor/*"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Operations Supervisor SLA Command"
-                moduleRole={UserRole.SUPERVISOR}
-                stepNumber={8}
-              />
-            }
-          />
+          <Route path="/supervisor" element={<SupervisorDashboardPage />} />
+          <Route path="/supervisor/dashboard" element={<SupervisorDashboardPage />} />
+          <Route path="/supervisor/escalations" element={<SupervisorEscalationPage />} />
+          <Route path="/supervisor/reviews" element={<SupervisorReviewsPage />} />
+          <Route path="/supervisor/reports" element={<SupervisorReportsPage />} />
         </Route>
 
-        {/* SYSTEM ADMINISTRATOR ROUTES (PROTECTED) */}
+        {/* SYSTEM ADMINISTRATOR ROUTES (STEP 9) */}
         <Route
           element={
             <ProtectedRoute allowedRoles={[UserRole.ADMIN]}>
@@ -182,26 +153,13 @@ export const AppRouter: React.FC = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            path="/admin"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Municipal System Administration"
-                moduleRole={UserRole.ADMIN}
-                stepNumber={9}
-              />
-            }
-          />
-          <Route
-            path="/admin/*"
-            element={
-              <RoleDashboardPlaceholder
-                moduleTitle="Municipal System Administration"
-                moduleRole={UserRole.ADMIN}
-                stepNumber={9}
-              />
-            }
-          />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+          <Route path="/admin/complaints" element={<AdminComplaintsPage />} />
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route path="/admin/departments" element={<AdminDepartmentsPage />} />
+          <Route path="/admin/sla-rules" element={<AdminSlaRulesPage />} />
+          <Route path="/admin/audit-logs" element={<AdminAuditLogsPage />} />
         </Route>
 
         {/* Catch-all fallback redirect */}

@@ -35,14 +35,15 @@ import { Card } from '../../../components/ui/Card';
 import { StatusBadge } from '../../../components/ui/StatusBadge';
 import { PriorityBadge } from '../../../components/ui/PriorityBadge';
 import { 
-  MOCK_COMPLAINTS, 
   MOCK_CATEGORIES, 
   MOCK_MUNICIPAL_STATS 
 } from '../../../data/mockData';
+import { useComplaints } from '../../complaints/context/ComplaintContext';
 import { CivicMapViewer } from '../../map/components/CivicMapViewer';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { complaints } = useComplaints();
   const [searchQuery, setSearchQuery] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -314,7 +315,7 @@ export const LandingPage: React.FC = () => {
           </Link>
         </div>
 
-        <CivicMapViewer complaints={MOCK_COMPLAINTS} height="420px" />
+        <CivicMapViewer complaints={complaints} height="420px" />
       </section>
 
       {/* Recent Public Civic Issues */}
@@ -336,7 +337,7 @@ export const LandingPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_COMPLAINTS.slice(0, 3).map((complaint) => (
+          {complaints.slice(0, 3).map((complaint) => (
             <Card key={complaint.id} variant="interactive" className="p-5 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2.5">

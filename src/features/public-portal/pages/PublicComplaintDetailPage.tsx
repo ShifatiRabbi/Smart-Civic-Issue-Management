@@ -28,20 +28,19 @@ import {
   Calendar,
   UserCheck
 } from 'lucide-react';
-import { MOCK_COMPLAINTS } from '../../../data/mockData';
+import { useComplaints } from '../../complaints/context/ComplaintContext';
 import { StatusBadge } from '../../../components/ui/StatusBadge';
 import { PriorityBadge } from '../../../components/ui/PriorityBadge';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
-import { ComplaintStatus, SlaStatus } from '../../../types';
+import { ComplaintStatus, SlaStatus, Attachment, TimelineEntry } from '../../../types';
 
 export const PublicComplaintDetailPage: React.FC = () => {
   const { referenceNumber } = useParams<{ referenceNumber: string }>();
+  const { getComplaintByReference, toggleSupport } = useComplaints();
 
   // Find complaint by reference number
-  const complaint = MOCK_COMPLAINTS.find(
-    (c) => c.referenceNumber.toLowerCase() === referenceNumber?.toLowerCase()
-  );
+  const complaint = getComplaintByReference(referenceNumber || '');
 
   const [hasSupported, setHasSupported] = useState(complaint?.hasSupported || false);
   const [supportCount, setSupportCount] = useState(complaint?.supportCount || 0);
@@ -70,10 +69,10 @@ export const PublicComplaintDetailPage: React.FC = () => {
 
   const handleSupportToggle = () => {
     if (hasSupported) {
-      setSupportCount((c) => c - 1);
+      setSupportCount((c: number) => c - 1);
       setHasSupported(false);
     } else {
-      setSupportCount((c) => c + 1);
+      setSupportCount((c: number) => c + 1);
       setHasSupported(true);
     }
   };
@@ -172,7 +171,7 @@ export const PublicComplaintDetailPage: React.FC = () => {
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {complaint.attachments.map((att) => (
+                {complaint.attachments.map((att: Attachment) => (
                   <div key={att.id} className="space-y-1.5">
                     <div className="relative group overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
                       <img
@@ -212,7 +211,7 @@ export const PublicComplaintDetailPage: React.FC = () => {
             </div>
 
             <div className="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
-              {complaint.timeline.map((entry, idx) => (
+              {complaint.timeline.map((entry: TimelineEntry, idx: number) => (
                 <div key={entry.id} className="relative group">
                   {/* Timeline Dot Indicator */}
                   <div className="absolute -left-6 top-1.5 w-4 h-4 rounded-full border-2 border-white bg-teal-500 shadow-xs flex items-center justify-center">
