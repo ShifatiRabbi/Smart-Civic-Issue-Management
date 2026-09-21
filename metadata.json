@@ -1,0 +1,6 @@
+{
+  "name": "Smart Civic Issue Management Platform",
+  "description": "A production-grade civic service frontend for public reporting, field dispatch, department triage, and municipal issue resolution.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
